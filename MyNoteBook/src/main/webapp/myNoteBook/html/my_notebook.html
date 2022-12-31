@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>my_notebook</title>
+    <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/my_notebook.css">
+    <script src="../js/axios-0.18.0.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+
+    <div id="app">
+<!--        上传时弹出表单-->
+        <div class="form">
+            <el-drawer
+                    title="完善笔记信息"
+                    :before-close="handleClose"
+                    :visible.sync="dialog"
+                    direction="rtl"
+                    custom-class="demo-drawer"
+                    ref="drawer"
+            >
+                <div class="demo-drawer__content">
+                    <el-form :model="form">
+                        <el-form-item label="简介" :label-width="formLabelWidth">
+                            <el-input v-model="form.desc_short" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="笔记类型" :label-width="formLabelWidth">
+                            <el-select v-model="form.classify" placeholder="请选择笔记类型">
+                                <el-option label="文学" value="文学"></el-option>
+                                <el-option label="理学" value="理学"></el-option>
+                                <el-option label="计算机" value="计算机"></el-option>
+                                <el-option label="经济学" value="经济学"></el-option>
+                                <el-option label="哲学" value="哲学"></el-option>
+                                <el-option label="编程" value="编程"></el-option>
+                                <el-option label="日常" value="日常"></el-option>
+                                <el-option label="网络" value="网络"></el-option>
+                                <el-option label="科学" value="科学"></el-option>
+                                <el-option label="社会" value="社会"></el-option>
+                                <el-option label="自然" value="自然"></el-option>
+                                <el-option label="其他" value="其他"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="介绍">
+                            <el-input type="textarea" v-model="form.description"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <div class="demo-drawer__footer">
+                        <el-button @click="cancelForm" style="margin-left: 90px ">取 消</el-button>
+                        <el-button style="margin-left: 90px " type="primary" @click="uploadDesc" :loading="loading">{{ loading ? '提交中 ...' : '确 定' }}</el-button>
+                    </div>
+                </div>
+            </el-drawer>
+        </div>
+
+        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+            <el-menu-item index="1">我的书架</el-menu-item>
+            <el-menu-item index="3" @click="toMessage">消息中心</el-menu-item>
+            <el-menu-item index="4" @click="toSquare">前往广场</a></el-menu-item>
+            <el-menu-item index="2" @click="toIndex">返回首页</el-menu-item>
+            <div class="addBook">
+                <i class="el-icon-circle-plus" @click="dialogFormVisible = true"></i>
+            </div>
+        </el-menu>
+        <div class="line"></div>
+
+        <div class="bookShell">
+            <template>
+                <el-table
+                        :data="tableData"
+                        style="width: 100%">
+                    <el-table-column
+                            label="BID"
+                            width="300">
+                        <template slot-scope="scope">
+                            <i class="el-icon-time"></i>
+                            <span style="margin-left: 10px">{{ scope.row.bookid }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            label="笔记名"
+                            width="800">
+                        <template slot-scope="scope">
+                            <div>
+                                <div slot="reference" class="name-wrapper" >
+                                    {{scope.row.bookname}}
+                                </div>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作">
+                        <template slot-scope="scope">
+                            <el-button type="success" icon="el-icon-edit" circle
+                                       title="编辑"
+                                       @click="handleEdit(scope.$index, scope.row)"></el-button>
+                            <el-button type="danger" icon="el-icon-delete" circle
+                                       title="删除"
+                                       @click="handleDelete(scope.$index, scope.row)"></el-button>
+                            <el-button type="primary" icon="el-icon-paperclip" circle
+                                       title="上传"
+                                       @click="upload(scope.$index, scope.row)"></el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </template>
+        </div>
+<!--        添加笔记的表单-->
+
+
+        <el-dialog title="填入信息" :visible.sync="dialogFormVisible">
+            <el-form>
+                <el-form-item label="给笔记起个名" :label-width="formLabelWidth">
+                    <el-input v-model="addBookInfo.name" autocomplete="off"></el-input>
+                </el-form-item>
+
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="add">确 定</el-button>
+            </div>
+        </el-dialog>
+
+    </div>
+
+
+
+</body>
+
+<script>
+    new Vue({
+       el:"#app",
+        mounted(){
+          this.searchBooks();
+        },
+       methods:{
+           upload(index, row){
+               var date = new Date();
+               var year = date.getFullYear();
+               var month = date.getMonth();
+               var day = date.getDate();
+                console.log(row);
+                this.dialog = true;
+               this.form.bookid = row.bookid;
+               this.form.userid = row.userid;
+               this.form.bookname = row.bookname;
+               this.form.upload_time = year+"/"+month+"/"+day;
+               const urlParams = new URLSearchParams(location.search);
+               let username = urlParams.get('username');
+               this.form.username = username;
+
+           },
+           uploadDesc(){
+               var _this = this;
+               axios({
+                   method:"post",
+                   url:"http://localhost:8080/MyNoteBook/user/upload",
+                   data:_this.form
+               }).then(function (resp){
+                   var data1 = resp.data;
+                   var t = _this;
+                   axios({
+                       method:"get",
+                       url:"http://localhost:8080/MyNoteBook/user/uploadCatalog?bookid="+t.form.bookid
+                   }).then(function (resp){
+                        var data2 = resp.data;
+                        if(data2 == "success"){
+                            t.$message({
+                                message:"笔记上传成功！",
+                                type:"success"
+                            });
+                            t.dialog = false;
+                        }else{
+                            t.$message({
+                                message:"笔记上传失败！",
+                                type:"error"
+                            });
+                        }
+                   })
+               })
+           },
+           searchBooks(){
+               this.addBookInfo.id = location.search.split("=")[2]-0;
+               var _this = this;
+               axios({
+                   method:"post",
+                   url:"http://localhost:8080/MyNoteBook/user/searchById",
+                   data:this.addBookInfo.id
+               }) .then(function (resp){
+                   _this.tableData = resp.data;
+                   console.log(resp.data);
+
+               })
+           },
+           add(){
+               let _this = this;
+               axios({
+                   method:"post",
+                   url:"http://localhost:8080/MyNoteBook/user/addBooks",
+                    data:_this.addBookInfo
+               }).then(function (resp){
+
+                   console.log(_this.addBookInfo.name+"#"+_this.addBookInfo.id)
+                   let data = resp.data;
+                   if(data == "success"){
+                       //关闭窗口
+                       _this.dialogFormVisible = false;
+                       //重新做一次查询操作
+                       _this.searchBooks();
+                       //弹出消息提示
+                       _this.$message({
+                           message:"添加成功！",
+                           type:"success"
+                       });
+
+                   }else{
+                       _this.$message({
+                           message:"添加失败！",
+                           type:"error"
+                       });
+                   }
+
+               })
+
+
+           },
+           toSquare(){
+                location.href="square.html"+location.search;
+           },
+           toMessage(){
+               location.href="message.html"+ location.search ;
+           },
+           toIndex(){
+               // const urlParams = new URLSearchParams(location.search);
+               // let username = urlParams.get('username');
+               location.href="after_login.html"+location.search ;
+           },
+           handleEdit(index, row) {
+               console.log(index, row);
+               location.href="edit.html"+location.search+"&bookid="+row.bookid;
+           },
+           handleDelete(index, row) {
+               console.log(index, row);
+               var _this = this;
+               this.$confirm('此操作将永久删除该该笔记, 是否继续?', '提示', {
+                   confirmButtonText: '确定',
+                   cancelButtonText: '取消',
+                   type: 'warning'
+               }).then(() => {
+                   //调用删除接口删除对应笔记，并再次查询
+                   axios({
+                       method:"post",
+                       url:"http://localhost:8080/MyNoteBook/user/deleteBooks",
+                       data:(index,row)
+                   }).then(function (resp){
+                       let data = resp.data;
+                       if(data == "success"){
+                           _this.$message({
+                               type: 'success',
+                               message: '删除成功!'
+                           });
+                           _this.searchBooks();
+                       }else{
+                           _this.$message({
+                               type: 'info',
+                               message: '已取消删除'
+                           });
+                       }
+                   })
+               }).catch(() => {
+                   this.$message({
+                       type: 'info',
+                       message: '已取消删除'
+                   });
+               });
+
+           },
+           handleSelect(key, keyPath) {
+               console.log(key, keyPath);
+           },
+           handleClose(done) {
+               if (this.loading) {
+                   return;
+               }
+               this.$confirm('确定要提交笔记信息吗？')
+                   .then(_ => {
+                       this.loading = true;
+                       this.timer = setTimeout(() => {
+                           done();
+                           // 动画关闭需要一定的时间
+                           setTimeout(() => {
+                               this.loading = false;
+                           }, 400);
+                       }, 2000);
+                   })
+                   .catch(_ => {});
+           },
+           cancelForm() {
+               this.loading = false;
+               this.dialog = false;
+               clearTimeout(this.timer);
+           }
+
+       },
+        data() {
+            return{
+                tableData: [{
+                    userid: '-',
+                    bookname: '-',
+                    bookid: '-'
+                }],
+                activeIndex: '1',
+                activeIndex2: '1',
+                table: false,
+                dialog: false,
+                loading: false,
+                form: {
+                    description:'',
+                    delivery: false,
+                    type: [],
+                    desc_short: '',
+                    classify:'',
+                    bookid:0,
+                    userid:0,
+                    bookname:'',
+                    username:'',
+                    upload_time:'',
+                    browse: 0
+                },
+                formLabelWidth: '80px',
+                timer: null,
+                desc: '',
+
+                dialogFormVisible: false,
+
+                formLabelWidth: '120px',
+                addBookInfo:{
+                    id:1,
+                    name:''
+                }
+            };
+
+        }
+    });
+
+
+
+</script>
+
+
+
+</html>

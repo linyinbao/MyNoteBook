@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="../css/msyh.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <script src="../js/vue.js"></script>
+    <script src="../element-ui/lib/index.js"></script>
+    <link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+    <script src="../js/axios-0.18.0.js"></script>
+</head>
+
+<body id="body">
+    <div id="login-card" class="login-card">
+        <div id="add-new" class="add-new" onclick="zhuce()"><img id="plus-img" class="plus-img"
+                src="../image/add.svg" /></div>
+        <form id="login-form" class="login-form" >
+            <div id="login-title" class="title">登录</div>
+            <div class="input">
+                <div class="input-tag">用户名</div><input id="username" type="text" name="user" v-model="UserInfo.username">
+            </div>
+            <div class="input">
+                <div class="input-tag">密码</div><input id="password" type="password" name="password" v-model="UserInfo.password">
+            </div>
+            <div id="login-submit" class="login-submit" @click="submit">确认</div>
+            <div id="login-submit2" class="login-submit back" onclick="back()">返回首页</div>
+        </form>
+    </div>
+
+</body>
+<footer>
+    <script src="../js/script.js"></script>
+</footer>
+
+<script>
+    function back(){
+        window.location.href="../index.html"
+    }
+    function zhuce() {
+        window.location.href = "./regist.html"
+    }
+    new Vue({
+        el:"#login-form",
+        methods:{
+
+
+            submit(){
+                // var username = document.getElementById("username").value
+                // var password = document.getElementById("password").value
+                // window.location.href="./after_login.html?username=" + escape(username);
+
+                var _this = this;
+                //发送ajax请求
+                axios({
+                    method: "post",
+                    url:"http://localhost:8080/MyNoteBook/user/login",
+                    data:_this.UserInfo
+                }).then(function (resp){
+                    console.log(_this.UserInfo);
+                    let data = resp.data;
+                    let info = data.split("#")[0];
+                    let id = data.split("#")[1];
+                    if(info == "success"){
+                        _this.$message({
+                            message:"登陆成功！",
+                            type:"success"
+                        });
+                        setTimeout(function (){
+                            location.href="after_login.html?username="+escape(_this.UserInfo.username)+"&id="+id;
+                        },500);
+                    }else if(info == "fail"){
+                        _this.$message({
+                            message:"用户名或者密码错误！",
+                            type:"error"
+                        });
+                    }
+                })
+            }
+
+        },
+        data(){
+            return{
+                UserInfo: {
+                    username:"",
+                    password:""
+                }
+
+
+            }
+
+        }
+    });
+</script>
+
+
+</html>

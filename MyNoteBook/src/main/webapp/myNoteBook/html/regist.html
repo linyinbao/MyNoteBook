@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="../css/msyh.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <script src="../js/vue.js"></script>
+    <script src="../element-ui/lib/index.js"></script>
+    <link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+    <script src="../js/axios-0.18.0.js"></script>
+</head>
+
+<body id="body">
+    <div id="login-card" class="login-card login-card-signup">
+        <form id="add-form" class="add-form add-form-fadein">
+            <div class="title">注册</div>
+            <div id="nameform" class="input nameform-leftin">
+                <div class="input-tag">用户名</div><input type="text" name="user" v-model="UserInfo.username">
+            </div>
+            <div id="passwordform" class="input passwordform-leftin">
+                <div class="input-tag">密码</div><input type="password" name="password" v-model="UserInfo.password">
+            </div>
+            <div id="confirmform" class="input confirmform-leftin">
+                <div class="input-tag">确认密码</div><input id="check" type="password" name="password">
+            </div>
+            <div id="add-new-submit" class="add-new-submit" @click="regist">提交</div>
+            <div id="add-new-submit2" class="add-new-submit forw" onclick="denglu()">前往登录</div>
+        </form>
+        
+    </div>
+
+</body>
+<footer>
+    <script src="../js/script.js"></script>
+</footer>
+
+<script>
+    
+
+
+   function denglu() {
+        window.location.href = "./login.html"
+    }
+    new Vue({
+       el:"#login-card",
+        mounted() {
+           //初始化条目数
+            //console.log(this.UserInfo);
+            var _this = this;
+            //发送ajax请求
+            axios({
+                method: "get",
+                url:"http://localhost:8080/MyNoteBook/user/totalCount"
+            }).then(function (resp){
+                let data = resp.data;
+                _this.counted = data-0;
+                _this.temp_count = data-0;
+                // console.log(_this.counted)
+                // console.log(_this.temp_count)
+            })
+
+
+        },
+        methods:{
+
+            // 注册
+            regist() {
+                //判断确认密码是否输入且相等
+                var check = document.getElementById("check").value;
+
+                if(this.UserInfo.username === ""){
+                    this.$message({
+                        message:"请输入用户名！",
+                        type:"error"
+                    });
+                    return false;
+                }else if(this.UserInfo.password === ""){
+                    this.$message({
+                        message:"请输入密码！",
+                        type:"error"
+                    });
+                    return false;
+                }else if (check === ""){
+                    this.$message({
+                        message:"请确认密码！",
+                        type:"error"
+                    });
+                    return false;
+                }else if(check != this.UserInfo.password){
+                    this.$message({
+                        message:"请保证两次密码相同！",
+                        type:"error"
+                    });
+                    return false;
+                }else{
+                    //console.log(this.UserInfo);
+                    var _this = this;
+
+                    //发送ajax请求
+                    axios({
+                        method: "post",
+                        url:"http://localhost:8080/MyNoteBook/user/regist",
+                        data:[_this.UserInfo,_this.UserInfo.username]
+                    }).then(function (resp){
+                        console.log([_this.UserInfo,_this.UserInfo.username]);
+                        let data = resp.data;
+                        if(data == "success"){
+                            _this.totalCount();
+                            if(_this.temp_count > _this.counted){
+                                _this.$message({
+                                    message:"注册成功！",
+                                    type:"success"
+                                });
+                                _this.counted = _this.temp_count;
+                                setTimeout(function (){window.location.href="login.html";},1000);
+                            }else{
+
+                                _this.$message({
+                                    message:"用户名有点受欢迎哦，再换一个吧",
+                                    type:"error"
+                                });
+                            }
+
+                        }else{
+                            _this.$message({
+                                message:"注册失败！",
+                                type:"error"
+                            });
+                        }
+                    })
+                }
+
+            },
+            //查询数据条目数
+            totalCount(){
+                //console.log(this.UserInfo);
+                var _this = this;
+                //发送ajax请求
+                axios({
+                    method: "get",
+                    url:"http://localhost:8080/MyNoteBook/user/totalCount"
+                }).then(function (resp){
+                    let data = resp.data;
+                    _this.temp_count = data-0;
+                    // console.log(_this.counted)
+                    // console.log(_this.temp_count)
+                })
+            }
+        },
+        data(){
+           return{
+               UserInfo:{
+                   username:"",
+                   password:""
+               },
+               counted:0,
+               temp_count:0
+           }
+        }
+    });
+</script>
+
+
+</html>

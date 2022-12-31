@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>广场</title>
+    <link rel="stylesheet" type="text/css" href="../css/msyh.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/square.css">
+<!--    <script src="../element-ui/lib/index.js"></script>-->
+<!--    <link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">-->
+    <script src="../js/axios-0.18.0.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="search">
+            <el-input class="input"
+                      style="width: 300px;margin-left: 30px"
+                      placeholder="搜索关键词"
+                      v-model="input"
+                      clearable>
+            </el-input>
+            <el-row class="button">
+                <el-button id="button"
+                        icon="el-icon-search" circle @click="search"></el-button>
+            </el-row>
+        </div>
+
+        <div class="toIndex" @click="toIndex">
+            <i class="el-icon-arrow-left" title="返回首页"></i>
+        </div>
+
+        <template>
+            <el-table
+                    :data="tableData"
+                    style="width: 100%"
+                    @current-change="command"
+                    >
+                <el-table-column type="expand">
+                    <template slot-scope="props">
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="book-id">
+                                <span>{{ props.row.bookid }}</span>
+                            </el-form-item>
+                            <el-form-item label="上传用户">
+                                <span>{{ props.row.username }}</span>
+                            </el-form-item>
+                            <el-form-item label="介绍">
+                                <span>{{ props.row.description }}</span>
+                            </el-form-item>
+                            <el-form-item label="浏览数">
+                                <span>{{ props.row.browse }}</span>
+                            </el-form-item>
+                            <el-form-item label="上传时间">
+                                <div class="desc">{{ props.row.upload_time }}</div>
+                            </el-form-item>
+                        </el-form>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="名字"
+                        prop="bookname"
+                        >
+                </el-table-column>
+                <el-table-column
+                        label="分类"
+                        prop="classify">
+                </el-table-column>
+                <el-table-column
+                        label="简介"
+                        prop="desc_short">
+                </el-table-column>
+            </el-table>
+        </template>
+        <div class="square" id="square">
+            <el-empty>
+                <el-button type="primary">我要上传<i class="el-icon-upload el-icon--right"></i></el-button>
+            </el-empty>
+        </div>
+    </div>
+</body>
+
+<script>
+    new Vue({
+       el:"#app",
+        mounted(){
+           //发送ajax请求获取可展示的书籍信息
+            var _this = this;
+            axios({
+                method:"get",
+                url:"http://localhost:8080/MyNoteBook/user/showBooks"
+            }).then(function (resp){
+                var data = resp.data;
+                _this.tableData = data;
+                console.log(data);
+            })
+        },
+        methods:{
+            command(val){
+                location.href="detail.html"+location.search+"&bookid="+val.bookid;
+                // console.log(val.bookid);
+                // //发送请求
+                // axios({
+                //     method:"post",
+                //     url:"http://localhost:8080/MyNoteBook/user/showDetail",
+                //     data:val.bookid
+                // }).then(function (resp){
+                //     //location.href=""
+                //     console.log(resp.data);
+                // })
+            },
+            search(){
+                var _this = this;
+                axios({
+                    method:"post",
+                    url:"http://localhost:8080/MyNoteBook/user/showBooksByCondition",
+                    data:_this.input
+                }).then(function (resp){
+                    var data = resp.data;
+                    _this.tableData = data;
+                    console.log(data);
+                })
+            },
+            toIndex(){
+                // const urlParams = new URLSearchParams(location.search);
+                // let username = urlParams.get('username');
+                location.href="after_login.html"+ location.search ;
+            }
+        },
+        data() {
+            return {
+                input: '',
+                tableData: [{
+                    bookid: '114514',
+                    username: '韦老七',
+                    description: '科幻巨作，由著名作家McaT提笔',
+                    browse: 110,
+                    upload_time: '2022/12/19',
+                    bookname:"高等数学",
+                    classify:"数学",
+                    desc_short:"爱好"
+                }]
+            }
+        }
+    });
+
+
+</script>
+
+<script>
+
+    document.onkeydown=function(e) {    //对整个页面监听
+        var keyNum = window.event ? e.keyCode : e.which;       //获取被按下的键值
+//判断如果用户按下了回车键（keycody=13）
+        if (keyNum == 13) {
+            document.getElementById("button").click();
+        }
+    }
+</script>
+
+</html>

@@ -1,0 +1,10 @@
+service\impl\UserServiceImpl.class
+pojo\catalog.class
+pojo\NoteBook.class
+pojo\showingBooksInfo.class
+service\UserService.class
+web_servlet\UserServlet.class
+pojo\User.class
+mapper\UserMapper.class
+web_servlet\BaseServlet.class
+util\SqlSessionFactoryUtil.class

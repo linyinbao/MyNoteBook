@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.UserMapper">
+
+    <resultMap id="UserResultMap" type="User">
+        <result property="username" column="username" />
+        <result property="password" column="password" />
+    </resultMap>
+
+    <insert id="regist">
+        insert into user (id, username, password)
+        select null,#{user.username},#{user.password} from dual where not exists(
+            select * from user where username=#{checkName}
+            )
+    </insert>
+    <delete id="deleteBooks">
+        delete from book_manager where bookname=#{bookname} and bookid=#{bookid}
+    </delete>
+    <select id="showBooksByCondition" resultType="pojo.showingBooksInfo">
+        select * from to_show
+        <where>
+            <if test="s != null and s != '' ">
+                and bookname like #{s} or classify like #{s} or desc_short like #{s}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

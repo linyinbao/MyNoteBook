@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>edit</title>
+    <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/edit.css">
+    <script src="../js/axios-0.18.0.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+
+
+    <div id="catalog" style="position: relative">
+
+        <div class="side-nav">
+
+            <template>
+                <div class="command" style="width: 50px">
+                    <i class="el-icon-notebook-1" title="查看" @click="edit"></i>
+                    <i class="el-icon-refresh-right" title="重置" @click="reset"></i>
+
+
+                </div>
+                <el-table
+                        id="bn"
+                        highlight-current-row
+                        @current-change="command"
+                        :data="tableData"
+                        style="width: 100%">
+                    <el-table-column
+                            prop="title"
+                            label="目录"
+                            width="300"
+                            onclick="command()">
+                    </el-table-column>
+                </el-table>
+
+            </template>
+
+        </div>
+
+        <div class="edit_area" style="display: inline-block;float: right;width: 1100px;height: 750px;
+                                margin-right: 50px;">
+
+            <el-input
+                    id="title"
+                    type="textarea"
+                    autosize
+                    placeholder="请输入标题"
+                    v-model="title"
+
+                    >
+            </el-input>
+            <div style="margin: 20px 0;"></div>
+            <el-input
+                    id="content"
+                    type="textarea"
+                    :autosize="{ minRows: 30, maxRows: 30}"
+                    placeholder="笔记内容"
+                    v-model="content"
+                    style="height: 600px"
+
+                    >
+            </el-input>
+        </div>
+        <div class="back" id="back" @click="back">
+            <i class="el-icon-back icon" style="font-size: 50px;border-radius: 50%"></i>
+        </div>
+
+    </div>
+</body>
+<script>
+    new Vue({
+       el:"#catalog",
+        mounted(val){
+            this.searchCatalog();
+            const urlParams = new URLSearchParams(location.search);
+            this.bookInfo.bookId = urlParams.get('bookid');
+        },
+        data() {
+            return {
+
+                tableData: [{
+                    bookid:0,
+                    c_id:12,
+                    title: '第一章',
+                    content:""
+                }],
+                bookInfo:{
+                    bookId:0,
+                    catalogName:"",
+                    c_id:0
+                },
+                title: '',
+                content: '',
+                checkIfSave:0
+
+            }
+        },
+        methods: {
+            handleNodeClick(data) {
+                console.log(data);
+            },
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            command(val){
+                //先自动保存已编辑内容
+                //this.save();
+                this.checkIfSave = 1;//修改为已保存状态
+                this.bookInfo.catalogName=val.title;
+                this.bookInfo.c_id=val.c_id;
+                //到时候通过url的参数确定bookid
+                this.bookInfo.bookId=val.bookid;
+                console.log(this.bookInfo);
+
+            },
+            pop(){
+
+            },
+            add(){
+
+            },
+            edit(){
+                //发送ajax请求，参数bookIn                fo，向数据库查询原内容，跳转对应网址
+                var _this = this;
+                axios({
+                    method:"post",
+                    url:"http://localhost:8080/MyNoteBook/user/editingInDetail",
+                    data:_this.bookInfo.c_id
+                }).then(function (resp){
+                    // var title = document.getElementById("title");
+                    // var content = document.getElementById("content");
+                    _this.content= resp.data;
+                    _this.title = _this.bookInfo.catalogName;
+                    console.log(resp.data);
+                })
+            },
+            reset(){
+              this.edit();
+            },
+            save(){
+
+            },
+            searchCatalog(){
+                var _this = this;
+                axios({
+                    method:"get",
+                    url:"http://localhost:8080/MyNoteBook/user/showDetail"+location.search,
+                    //+"&bookid="+_this.bookInfo.bookId+"&c_id="+_this.bookId.c_id
+                }).then(function (resp){
+                    let catalog = resp.data;
+                    console.log("123");
+                    console.log(catalog);
+                    _this.tableData = catalog;
+                })
+            },
+            back(){
+                const urlParams = new URLSearchParams(location.search);
+                let username = urlParams.get('username');
+                let id = urlParams.get('id');
+                location.href="square.html?username="+username+"&id="+id;
+            }
+        }
+    });
+
+</script>
+
+
+</html>

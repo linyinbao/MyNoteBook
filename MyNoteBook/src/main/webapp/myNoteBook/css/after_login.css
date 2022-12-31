@@ -1,0 +1,36 @@
+.demo-type{
+    
+}
+.user{
+    position: absolute;
+    color: white;
+    text-align: center;
+    z-index: 21;
+    top: 7px;
+    right: 20px;
+    font-size: 16px;
+}
+.zimu{
+    position: inherit;
+    background-color: #e74c3c;
+    color: #ffff8d;
+    margin: 0,auto;
+    width: 28px;
+    height: 28px;
+    padding-top: 5px;
+    top: -6px;
+    left: -40px;
+    border-radius: 50%;
+    user-select: none;
+
+}
+.login-out{
+    position: absolute;
+    text-decoration: none;
+    font-size: 12px;
+    top: 3px;
+    left: -120px;
+}
+.login-out a{
+    color: white;
+}

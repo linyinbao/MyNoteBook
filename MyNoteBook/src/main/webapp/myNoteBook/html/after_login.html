@@ -1,0 +1,321 @@
+<!DOCTYPE HTML>
+<html>  
+<head>                 
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">  
+<title>MyNoteBook</title>      
+<link rel="stylesheet" href="../bootstrap-3.4.1-dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/index.css">
+<script src="../js/vue.js"></script>
+<script src="../element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+<link rel="stylesheet" href="../css/after_login.css">
+
+
+</head>
+<body> 
+
+    <div class="console">
+        <ul>
+            <li class="daohang">
+                <div class="lianjie" id="sy" style="height: 100%; padding-top: 6px;" onclick="shouye()">首页</div>
+            </li>
+            <li class="daohang">
+                <div class="lianjie" id="gc" style="height: 100%; padding-top: 6px;" onclick="guangchang()">广场</div>
+            </li>
+            <li class="daohang">
+                <div class="lianjie" id="tj" style="height: 100%; padding-top: 6px;" onclick="tijiao()">提交</div>
+            </li>
+    
+        </ul>
+        <div class="user" id="user">
+            <div class="login-out"><a href="../index.html">退出登录</a></div>
+            <div class="zimu" style="display: inline-block;" v-model="firstword">{{firstword}}</div>
+            <div class="wellcome" style="display: inline-block;" v-model="username">你好呀，{{username}}</div>
+        </div>
+    </div>
+    
+    
+    <!-- 首页大logo区域 -->
+    <div id="app">
+        <template>
+            <el-carousel indicator-position="outside">
+                <el-carousel-item v-for="pic in pics" :key="pic.id">
+                    <img :src="pic.url" class="image"/>
+                    
+                </el-carousel-item>
+                <div class="logo">
+                    <img src="../image/logo.png" class="logoimag" width="100px"/>
+                </div>
+                <div class="l">
+                    <span class="hcqFont hcqStyle1">
+                        M
+                    </span>
+                    <span class="hcqFont hcqStyle1">
+                        Y
+                    </span>
+                    <span class="hcqFont hcqStyle1">
+                        N
+                    </span>
+                    <span class="hcqFont hcqStyle1">
+                        O
+                    </span>
+                    <span class="hcqFont hcqStyle1">
+                        T
+                    </span>
+                    <span class="hcqFont hcqStyle1">
+                        E
+                    </span>
+                    <span class="hcqFont hcqStyle1">
+                        B
+                    </span>
+                    <span class="hcqFont hcqStyle1">
+                        O
+                    </span>
+                    <span class="hcqFont hcqStyle1">
+                        O
+                    </span>
+                    <span class="hcqFont hcqStyle1">
+                        K
+                    </span>
+                </div>
+                <div class="down" onclick="biji()">
+                    <!-- 设置按钮 -->
+                
+                    <button type="button" class="btn btn-info" id="button">我的笔记</button>
+                
+                </div>
+            </el-carousel>
+            
+        </template>
+        
+    </div>
+    <hr>
+    <!-- 页头 -->
+    <div class="page-header" style="padding-left: 20px; user-select: none;">
+        <h1>To write down what you want <small>via mynotebook</small></h1>
+    </div>
+    
+
+    
+        <div class="jumbotron" style="padding-left: 20px; user-select: none;opacity: 0.8; display: flex;background-image: linear-gradient(#f1f1f1,#797c78);">
+
+            <div>
+            <h1> My Notebook!</h1>
+            <p> 这是一个简易的网页版笔记本，我希望将其开发为一个辅助学习、便于分享的简易网站</p>
+            <p> 其实这是我的一个练手项目，但我希望它能更有意义一些</p>
+            <p> 你可以点击下面的按钮了解相关内容...</p>
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+            </div>
+
+            <div class="animation-dowm1">
+                
+                <b class="box">
+                    这是一个会旋转的立方体，但我还没想好要加入什么
+                </b>
+                <div class="animation-dowm2">
+                    <b class="box">
+                        这是一个会旋转的立方体，但我还没想好要加入什么
+                    </b>
+                </div>
+            </div>
+            
+        </div>
+    
+    <footer class="footer">
+        <div class="list-group">
+            <button type="button" class="list-group-item" onclick="f1()">联系我</button>
+            <button type="button" class="list-group-item" onclick="f2()">作者的话</button>
+            <button type="button" class="list-group-item" onclick="f3()">留言</button>
+            <button type="button" class="list-group-item" onclick="f4()">常见问题</button>
+            
+        </div>
+    </footer>
+        
+    
+    
+    
+
+
+</body>
+<script>
+    new Vue({
+        el: "#app",
+        mounted() {
+
+        },
+        data() {
+            return {
+                pics: [
+                    {
+                        id: 0,
+                        url: "../image/6c1bc1deb312449195a8c6a802e916c1.jpg"
+                    },
+                    {
+                        id: 1,
+                        url: "../image/214d533c880611ebb6edd017c2d2eca2.png"
+                    },
+                    {
+                        id: 2,
+                        url: "../image/1.png"
+                    },
+                    {
+                        id: 3,
+                        url: "../image/6e501611880511ebb6edd017c2d2eca2.jpg"
+                    },
+                    {
+                        id: 4,
+                        url: "../image/2.jpg"
+                    }
+
+
+                ]
+            }
+        }
+
+    });
+</script>
+
+
+<!-- 背景效果 -->
+
+<script type="text/javascript" src="https://cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>　
+<script>
+!
+function() {
+    function n(n, e, t) {
+        return n.getAttribute(e) || t
+    }
+    function e(n) {
+        return document.getElementsByTagName(n)
+    }
+    function t() {
+        var t = e("script"),
+        o = t.length,
+        i = t[o - 1];
+        return {
+            l: o,
+            z: n(i, "zIndex", -1),
+            o: n(i, "opacity", 1),
+            c: n(i, "color", "0, 122, 204"),
+            n: n(i, "count", 499)
+        }
+    }
+    function o() {
+        a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+        c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+    }
+    function i() {
+        r.clearRect(0, 0, a, c);
+        var n, e, t, o, m, l;
+        s.forEach(function(i, x) {
+            for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+            null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+        }),
+        x(i)
+    }
+    var a, c, u, m = document.createElement("canvas"),
+    d = t(),
+    l = "c_n" + d.l,
+    r = m.getContext("2d"),
+    x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+    function(n) {
+        window.setTimeout(n, 1e3 / 45)
+    },
+    w = Math.random,
+    y = {
+        x: null,
+        y: null,
+        max: 2e4
+    };
+    m.id = l,
+    m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+    e("body")[0].appendChild(m),
+    o(),
+    window.onresize = o,
+    window.onmousemove = function(n) {
+        n = n || window.event,
+        y.x = n.clientX,
+        y.y = n.clientY
+    },
+    window.onmouseout = function() {
+        y.x = null,
+        y.y = null
+    };
+    for (var s = [], f = 0; d.n > f; f++) {
+        var h = w() * a,
+        g = w() * c,
+        v = 2 * w() - 1,
+        p = 2 * w() - 1;
+        s.push({
+            x: h,
+            y: g,
+            xa: v,
+            ya: p,
+            max: 6e3
+        })
+    }
+    u = s.concat([y]),
+    setTimeout(function() {
+        i()
+    },
+    100)
+} ();
+</script>
+
+<!-- 跳转 -->
+<script type="text/javascript">
+
+    function shouye() {
+        window.location.href = "https://baidu.com"
+    }
+    function guangchang() {
+        let param = location.href.split("?")[1];
+        window.location.href = "./square.html?"+param;
+    }
+    function tijiao() {
+        window.location.href = "#"
+    }
+    function biji() {
+        let param = location.href.split("?")[1];
+        window.location.href = "./my_notebook.html?"+param;
+    }
+    // 底部
+    function f1() {
+        window.location.href = "#"
+    }
+    function f2() {
+        window.location.href = "#"
+    }
+    function f3() {
+        window.location.href = "#"
+    }
+    function f4() {
+        window.location.href = "#"
+    }
+</script>
+
+<!-- 显示用户 -->
+<script>
+    new Vue({
+        el:"#user",
+        data(){
+            return{
+                username: "McaT",
+                firstword: "M"
+            }
+        },
+        mounted(){
+            var un = location.search.split("=")[1];
+            un = un.split("&")[0];
+            un = unescape(un);
+            var f = un[0];
+            f = unescape(f);
+            this.username = un;
+            this.firstword = f;
+            
+        }
+    });
+</script>
+
+</html>

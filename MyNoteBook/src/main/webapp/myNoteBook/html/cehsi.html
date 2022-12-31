@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>拖拽换位</title>
+    <style type="text/css">
+        .div1,
+        .div2,
+        .div3 {
+            float: left;
+            width: 100px;
+            margin: 10px;
+            height: 100px;
+            border: 1px solid #ccc;
+            margin: 0 50px;
+        }
+
+        .div {
+            height: 100%;
+        }
+
+        p {
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .dragging {
+            border: 3px solid blue !important;
+        }
+
+        .drag-over {
+            border: 3px dashed purple !important;
+        }
+    </style>
+</head>
+
+<body>
+<div class="div1" ondrop="drop(event,this)" ondragover="dragover(event,this)" draggable="true"
+     ondragstart="dragstart(this)" ondragend="dragend(this)" ondragleave="dragleave(this)">
+    <div class="div" style="background-color:#ff6a00;">
+        <p class="title">我是第一！</p>
+    </div>
+</div>
+<div class="div2" ondrop="drop(event,this)" ondragover="dragover(event,this)" draggable="true"
+     ondragstart="dragstart(this)" ondragend="dragend(this)" ondragleave="dragleave(this)">
+    <div class="div" style="background-color:#00ff21;">
+        <p class="title">我是第二！</p>
+    </div>
+</div>
+<div class="div3" ondrop="drop(event,this)" ondragover="dragover(event,this)" draggable="true"
+     ondragstart="dragstart(this)" ondragend="dragend(this)" ondragleave="dragleave(this)">
+    <div class="div" style="background-color:red;">
+        <p class="title">我是第三！</p>
+    </div>
+</div>
+</body>
+
+<script>
+    var startDiv = null; //储存拖拽的元素
+    var temp = null;
+    //给子元素动态绑定事件
+    document.querySelectorAll('.title').forEach(function (item, index) {
+        item.onclick = function () {
+            console.log(index);
+        }
+    })
+    //在元素开始被拖动时候触发
+    function dragstart(dom) {
+        startDiv = dom;
+        startDiv.classList.add('dragging');
+    }
+    //在拖动操作完成时触发
+    function dragend(dom) {
+        dom.classList.remove('dragging');
+    }
+    //当被拖动元素在目的地元素内时触发
+    function dragover(e, dom) {
+        e.preventDefault();
+        if (dom !== startDiv) {
+            dom.classList.add('drag-over');
+        }
+    }
+    //当被拖动元素没有放下就离开目的地元素时触发
+    function dragleave(dom) {
+        dom.classList.remove('drag-over');
+    }
+    //当拖动完后,释放元素触发
+    //如果子元素没有动态绑定的事件可用innerHTML方法，此方法会使动态绑定的事件不生效
+    // function drop(e, dom) {
+    // 	startDiv.classList.remove('dragging');
+    // 	dom.classList.remove('drag-over');
+    // 	if (startDiv !== dom) {
+    // 		temp = startDiv.innerHTML;
+    // 		startDiv.innerHTML = dom.innerHTML;
+    // 		dom.innerHTML = temp;
+    // 	}
+    // }
+    //如果子元素有动态绑定的事件可用下边方法
+    function drop(e, dom) {
+        startDiv.classList.remove('dragging');
+        dom.classList.remove('drag-over');
+        if (startDiv !== dom) {
+            var startLen = startDiv.children.length;
+            var endLen = dom.children.length;
+            for (; startLen--;) {
+                dom.appendChild(startDiv.children[0]);
+            }
+            for (; endLen--;) {
+                startDiv.appendChild(dom.children[0]);
+            }
+        }
+    }
+</script>
+
+</html>

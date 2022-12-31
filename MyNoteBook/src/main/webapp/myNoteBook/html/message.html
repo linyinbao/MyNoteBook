@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>message</title>
+    <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/my_notebook.css">
+    <link rel="stylesheet" type="text/css" href="../css/message.css">
+    <script src="../js/axios-0.18.0.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+
+<div id="app">
+
+
+    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+        <el-menu-item index="3" @click="toBookShell">我的书架</el-menu-item>
+        <el-menu-item index="1" target="_blank" style="text-decoration: none">消息中心</a></el-menu-item>
+        <el-menu-item index="4"@click="toSquare">前往广场</a></el-menu-item>
+        <el-submenu index="2">
+            <template slot="title">我的工作台</template>
+            <el-menu-item index="2-1">待开发...</el-menu-item>
+            <el-menu-item index="2-2">待开发...</el-menu-item>
+            <el-menu-item index="2-3">待开发...</el-menu-item>
+            <el-submenu index="2-4">
+                <template slot="title">待开发...</template>
+                <el-menu-item index="2-4-1">待开发...</el-menu-item>
+                <el-menu-item index="2-4-2">待开发...</el-menu-item>
+                <el-menu-item index="2-4-3">待开发...</el-menu-item>
+            </el-submenu>
+        </el-submenu>
+
+    </el-menu>
+    <div class="line"></div>
+
+    <div class="message">
+        <el-empty description="收件箱里是空的哦~" style="padding-top: 200px"></el-empty>
+    </div>
+
+
+</div>
+
+
+
+</body>
+
+<script>
+    new Vue({
+        el:"#app",
+        mounted(){
+
+        },
+        methods:{
+
+            toBookShell(){
+              location.href="my_notebook.html"+ location.search;
+            },
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            toSquare(){
+                location.href="square.html"+location.search;
+            }
+
+
+        },
+        data() {
+            return{
+                activeIndex: '1',
+                activeIndex2: '1',
+                table: false,
+                dialog: false,
+                loading: false,
+                formLabelWidth: '80px',
+                timer: null,
+                desc: '',
+                dialogFormVisible: false,
+                formLabelWidth: '120px',
+            };
+
+        }
+    });
+
+
+
+</script>
+
+
+
+</html>

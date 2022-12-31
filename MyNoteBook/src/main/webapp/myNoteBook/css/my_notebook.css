@@ -1,0 +1,44 @@
+
+body{
+    display: flex;
+    background-color: #fff4f4;
+    padding-left: 80px;
+}
+
+.bookShell {
+    height: auto;
+    width: 1300px;
+
+}
+.el-table{
+    height: auto;
+}
+.el-menu-demo{
+    background-color: #f1f3f4 !important;
+}
+/*.el-form-item{*/
+/*    position: relative;*/
+/*}*/
+/*.el-form-item__label{*/
+/*    position: absolute;*/
+/*    left: 20px;*/
+/*}*/
+
+/*.demo-drawer__content{*/
+/*    width: auto;*/
+/*    padding-left: 20px;*/
+/*}*/
+.addBook{
+    float: right;
+    margin-right:10px
+}
+.el-icon-circle-plus{
+    font-size: 60px;
+    color: #59ca73;
+    transition: all .2s ease-in-out;
+}
+
+.el-icon-circle-plus:hover{
+    color: #67c23a;
+    transform: rotateZ(180deg);
+}

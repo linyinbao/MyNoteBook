@@ -1,0 +1,345 @@
+ul {
+    margin-block-end: 0;
+
+}
+.body{
+    position: relative;
+}
+hr{
+    border: 1px dotted;
+}
+.console {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(0, 120, 212, 0);
+    background: #212b2c;
+
+    height: 30px;
+}
+
+.daohang {
+
+    float: left;
+    width: 200px;
+    height: 30px;
+    margin: 0;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+
+}
+
+.lianjie {
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    font-size: 16px;
+    color: white;
+    border-right: solid .5px #a67f7c;
+}
+
+.daohang:hover {
+    background-color: #47552c;
+    color: red !important;
+    transition: all .3s ease-in-out;
+
+}
+
+.log_up {
+    float: right;
+    height: 30px;
+    width: 100px;
+    user-select: none;
+    color: white;
+
+}
+
+.log_in {
+    position: relative;
+    float: right;
+    height: 30px;
+    width: 100px;
+    user-select: none;
+    color: white;
+}
+
+.log_in:hover {
+    background-color: #47552c;
+    transition: all .3s ease-in-out;
+
+}
+
+.log_up:hover {
+    background-color: #47552c;
+    transition: all .3s ease-in-out;
+}
+
+
+
+
+
+.logo{
+
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    animation: bounce 2s;
+    
+    z-index: 10;
+}
+.logoimag{
+    border-radius: 50%;
+}
+
+.l{
+    position: absolute;
+    font-size: 26px;
+    top: 250px;
+    left: 330px;
+    z-index: 10;
+    user-select: none;
+}
+.down {
+    position: relative;
+    margin: 50, auto;
+    height: 80px;
+    width: 100%;
+    
+
+}
+.btn{
+    z-index: 10;
+}
+
+#button {
+    position: absolute;
+    width: 400px;
+    height: 100%;
+    margin: 500px, 50%;
+    top: 500px;
+    left: 35%;
+    font-size: 32px;
+    
+    background: rgba(33, 43, 44, .5);
+    border: 1px solid #db7a90;
+
+
+}
+#button:hover{
+    background: black;
+    scale: 1.1;
+    
+    transition: all .2s ease-in-out;
+}
+
+
+.animation-dowm1{
+    display: flex;
+    font-size: 32px;
+    color: #007acc;
+    position: relative;
+    margin-left: 350px;
+    width: 250px;
+    transform: rotateY(5deg);
+    transform-style: preserve-3d;
+    
+    background-image: url('../image/bg.jpg');
+    transition: all 1s;
+    
+    
+}
+
+.jumbotron{
+    perspective: 1000px;
+}
+.animation-dowm2{
+    display: flex;
+    font-size: 32px;
+    
+    color: #007acc;
+    position: absolute;
+    top: 0;
+    left: 0%;
+    transform: rotateY(-90deg) translate3d(-125px, 0, 125px);
+    
+    width: 100%;
+    height: 100%;
+    background-image: url('../image/bg.jpg');
+    
+
+    
+}
+.animation-dowm1:hover {
+    transform: rotateY(50deg);
+    
+}
+.box{
+    padding: 30px;
+}
+.list-group-item:hover{
+    transition: all .3s ease;
+    font-size: 20px;
+}
+/* logo字体样式 */
+@keyframes bounce {
+    0% {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+
+    15% {
+        transform: translateY(0);
+        padding-bottom: 5px;
+        
+    }
+
+    30% {
+        transform: translateY(-50%);
+        
+    }
+
+    40% {
+        transform: translateY(0%);
+        
+        
+    }
+
+    50% {
+        transform: translateY(-30%);
+        
+    }
+    
+
+    70% {
+        transform: translateY(0%);
+        
+        
+    }
+
+    80% {
+        transform: translateY(-15%);
+        
+    }
+
+    90% {
+        transform: translateY(0%);
+        padding-bottom: 8px;
+        
+    }
+
+    95% {
+        transform: translateY(-7%);
+        
+    }
+
+    97% {
+        transform: translateY(0%);
+        padding-bottom: 9px;
+       
+    }
+
+    99% {
+        transform: translateY(-3%);
+        
+    }
+
+    100% {
+        transform: translateY(0);
+        padding-bottom: 9px;
+        opacity: 1;
+    }
+}
+.hcqFont {
+    position: relative;
+    letter-spacing: .07em;
+    font-size: 3em;
+    font-weight: normal;
+    margin: 0 auto
+}
+
+.hcqFont:before,
+.hcqFont:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0
+}
+
+.hcqStyle1 {
+    color: hsl(184, 80%, 25%);
+    animation: bounce 2s;
+    text-shadow: 0 0 1px currentColor,
+        /*highlight*/
+        -1px -1px 1px hsl(184, 80%, 50%), 0 -1px 1px hsl(184, 80%, 55%), 1px -1px 1px hsl(184, 80%, 50%),
+        /*light shadow*/
+        1px 1px 1px hsl(184, 80%, 10%), 0 1px 1px hsl(184, 80%, 10%), -1px 1px 1px hsl(184, 80%, 10%),
+        /*outline*/
+        -2px -2px 1px hsl(184, 80%, 15%), -1px -2px 1px hsl(184, 80%, 15%), 0 -2px 1px hsl(184, 80%, 15%), 1px -2px 1px hsl(184, 80%, 15%), 2px -2px 1px hsl(184, 80%, 15%), 2px -1px 1px hsl(184, 80%, 15%), 2px 0 1px hsl(184, 80%, 15%), 2px 1px 1px hsl(184, 80%, 15%), -2px 0 1px hsl(184, 80%, 15%), -2px -1px 1px hsl(184, 80%, 15%), -2px 1px 1px hsl(184, 80%, 15%),
+        /*dark shadow*/
+        2px 2px 2px hsl(184, 80%, 5%), 1px 2px 2px hsl(184, 80%, 5%), 0 2px 2px hsl(184, 80%, 5%), -1px 2px 2px hsl(184, 80%, 5%), -2px 2px 2px hsl(184, 80%, 5%)
+}
+
+.footer{
+    width: 100%;
+    height: 200px;
+    padding-top: 30px;
+    
+    background-color: #233e51;
+}
+.list-group-item {
+    background-color: #233e51;
+    color: white !important;
+    border:none
+
+}
+.list-group-item :hover {
+    background-color: #a8a8a8 !important;
+    
+}
+button.list-group-item:hover {
+    
+    background-color: #14384b !important;
+}
+button.list-group-item:focus {
+    
+    text-decoration: none;
+    background-color: #14384b;
+}
+
+/* 走马灯 */
+.el-carousel__item h3 {
+    color: #475669;
+    font-size: 18px;
+    opacity: 0.75;
+    line-height: 300px;
+    margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
+}
+
+#id{
+    background: #3c3c3c;
+    width: 80%;
+    
+}
+.image{
+    height: 100%;
+}
+.el-carousel {
+    position: relative;
+    height: 700px;
+    text-align: center;
+}
+
+.el-carousel__container {
+    position: relative;
+    height: 670px !important;
+}
+
